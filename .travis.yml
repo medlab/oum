@@ -1,0 +1,13 @@
+language: python
+
+script:
+  - true
+
+deploy:
+  provider: pypi
+  user: congzhang
+  password:
+    secure: mAAuWb8DB0BlZSZnQkz8oXna76JsHIJYgXbS0fGV6X1agjiudWESA6ALCWg7m+rc4wJUEVoAgXrD64nACN2gfR1UzngSSuK1sdfTwrNx8HGjlK/7FSmUhmcZpoigkjSha/JAxgqdWxYACjR7GQ3jf5E1brQmp0AYkJTrrzLSTsI0On55BB9coOpaTrn7+mwgCIedFcZ8RwLC+gZLgkBecxKfl2brwXHrh6wNhL1D0SF8eAzmVa1N37fNb5WsTSWr+djLzs579EDe4WTTQ09VdAR2116IIW3KmSHknT64Gi2l9UfTVV42VXxh4CVn2VvdisxLpmSCFWEs9ldlXMD4Sj/+q6x3VtUTmTHTpwnAWtEo4PBGLYoUdvyr4og2h5K92Q0hJJ9HRSf2FXiCsDy9E9IApPEa++FVtoYlbKVNoZ66Uz+oP3oHYnxGmcQCna+zbsBshYtL6ObEWnbPZKNc7g3fYhx7TdI39WhYc/5Zb4W+N66sNV62U7gnWFxFHF9LJ1K/S++/Mb+kQkthxU/wIJtrGEaHIHACALFdRaZkWcPEvMSM3DtnNxGPY/KaNNSayY5uFTX5OCLhf7p3wphgsRlcmEPItdgXWehqgez78QT31m+/xxiaoAcqE2a2lM++ulIz9nGdqo4kz8Bz+94XQIMgG8cITwEp6+rhgewVLQQ=
+  on:
+    distributions: sdist bdist_wheel
+    repo: medlab/oum
