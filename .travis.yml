@@ -14,8 +14,8 @@ install:
 - conda config --set always_yes yes --set changeps1 no
 - conda update -q conda
 - conda info -a
-- conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION -f  environment_linux.yml
-- source activate test-environment
+- conda env create -f environment_linux.yml
+- source activate cling
 deploy:
   provider: pypi
   user: congzhang
