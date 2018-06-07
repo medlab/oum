@@ -4,4 +4,4 @@ conda:
 formats:
     - epub
     - pdf
-    - html
+    - htmlzip
