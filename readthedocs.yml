@@ -1,2 +1,7 @@
 conda:
     file: environment.yml
+    
+formats:
+    - epub
+    - pdf
+    - html
