@@ -13,7 +13,7 @@ class SeleniumElementProxyBase:
         self.dirty=dirty
 
         self.driver=None
-        self.parent_selenium_element=None
+        self.parent_selenium_element_proxy=None
         pass
 
     @property
@@ -26,13 +26,17 @@ class SeleniumElementProxyBase:
         pass
 
     @property
-    def parent_selenium_element(self):
+    def parent_selenium_element_proxy(self):
         return self._parent
         return
 
-    @parent_selenium_element.setter
-    def parent_selenium_element(self, value):
+    @parent_selenium_element_proxy.setter
+    def parent_selenium_element_proxy(self, value):
         self._parent=value
+        pass
+
+    def __getattr__(self, attr):
+        raise NotImplementedError(f'should not be here, maybe your want give {SeleniumElementProxy.__name__} but not the base class a try?')
         pass
 
     pass
@@ -45,7 +49,7 @@ class SeleniumElementProxy(SeleniumElementProxyBase):
 
     def __getattr__(self, attr):
         if self.dirty or (self.real_element==None and self.lazy):
-            find_root=self.driver if self.parent_selenium_element==None else self.parent_selenium_element
+            find_root=self.driver if self.parent_selenium_element_proxy == None else self.parent_selenium_element_proxy
             self.real_element=find_root.find_element(self.find_by, self.by_value)
             self.dirty=False
 
@@ -65,7 +69,7 @@ class SeleniumElementsProxy(SeleniumElementProxyBase): # TODO bad design here, j
         :rtype: list[WebElement]
         '''
         if self.dirty or (self.real_element_list==None and self.lazy):
-            find_root=self.driver if self.parent_selenium_element==None else self.parent_selenium_element
+            find_root=self.driver if self.parent_selenium_element_proxy == None else self.parent_selenium_element_proxy
             self.real_element_list=find_root.find_elements(self.find_by, self.by_value)
             self.dirty=False
 
@@ -114,9 +118,12 @@ class OUMElement:
 
     pass
 
-def auto_set_all_oum_element_driver_attr(target_page_obj, driver): #TODO seems not work!
+def auto_set_all_oum_element_driver_attr(target_page_obj, driver, parent_selenium_element_proxy): #TODO seems not work!
+
     '''
     auto fill the driver context to all OUMElement
+    :param parent_selenium_element_proxy:
+    :type parent_selenium_element_proxy: SeleniumElementProxyBase
     :param target_page_obj:
     :param driver:
     :return:
@@ -132,5 +139,6 @@ def auto_set_all_oum_element_driver_attr(target_page_obj, driver): #TODO seems n
     for pd_obj in all_oum_pd_obj: # type: OUMElement
         selenium_element_proxy=pd_obj.__get__(target_page_obj, target_page_obj.__class__)  # type: SeleniumElementProxyBase
         selenium_element_proxy.driver=driver
+        selenium_element_proxy.parent_selenium_element_proxy=parent_selenium_element_proxy
         pass
     pass
