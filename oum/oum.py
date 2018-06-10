@@ -39,7 +39,7 @@ class SeleniumElementProxyBase:
 
 class SeleniumElementProxy(SeleniumElementProxyBase):
     def __init__(self, *args, **kwargs):
-        super(self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.real_element=None
         pass
 
@@ -74,9 +74,18 @@ class SeleniumElementsProxy(SeleniumElementProxyBase): # TODO bad design here, j
     pass
 
 class OUMElement:
-    def __init__(self, driver, parent_selenium_element, find_by=by.By.ID, is_list=False, by_value=None, lazy=True, dirty=False):
-        self.driver=driver # type: WebDriver
-        self.parent_selenium_element=parent_selenium_element # type: WebElement
+    def __init__(self, parent_selenium_element, find_by=by.By.ID, by_value=None, is_list=False, lazy=True, dirty=False):
+        '''
+
+        :param parent_selenium_element: another OUMElement ref or a str represent it
+        :param find_by:
+        :param is_list:
+        :param by_value:
+        :param lazy:
+        :param dirty:
+        '''
+        #self.driver=driver # type: WebDriver
+        self.parent_selenium_element=parent_selenium_element # type: str|OUMElement
         self.find_by=find_by
         self.by_value=by_value
         self.is_list=is_list
@@ -95,9 +104,9 @@ class OUMElement:
         raise NotImplementedError("[OUM]delete is not support")
         pass
 
-    def __get__(self, instance):
+    def __get__(self, instance, instance_class):
         if not hasattr(instance, self.value_attr_key):
-            a_proxy_element=SeleniumElementsProxy(self.find_by, self.by_value, self.lazy, self.dirty) if self.is_list else SeleniumElementProxyBase(self.find_by, self.by_value, self.lazy, self.dirty)
+            a_proxy_element=SeleniumElementsProxy(self.find_by, self.by_value, self.lazy, self.dirty) if self.is_list else SeleniumElementProxy(self.find_by, self.by_value, self.lazy, self.dirty)
             setattr(instance, self.value_attr_key, a_proxy_element)
 
         return getattr(instance, self.value_attr_key)
@@ -111,14 +120,17 @@ def auto_set_all_oum_element_driver_attr(target_page_obj, driver): #TODO seems n
     :param target_page_obj:
     :param driver:
     :return:
+
+    #TODO need refactor in the future to find the right way to enum all OUMElement PD in target class
+    #TODO how about the parent element problem?
     '''
 
     import inspect
     target_class=target_page_obj.__class__
-    all_oum_pd=[pd for pd in dir(target_class) if isinstance(getattr(target_class, pd), OUMElement)]
-    all_oum_pd_obj=[getattr(target_class,pd) for pd in all_oum_pd]
+    all_oum_pd=[pd for pd in dir(target_class) if pd in target_class.__dict__ and isinstance(target_class.__dict__[pd], OUMElement)]
+    all_oum_pd_obj=[target_class.__dict__[pd] for pd in all_oum_pd]
     for pd_obj in all_oum_pd_obj: # type: OUMElement
-        selenium_element_proxy=pd_obj.__get__(target_page_obj)  # type: SeleniumElementProxyBase
+        selenium_element_proxy=pd_obj.__get__(target_page_obj, target_page_obj.__class__)  # type: SeleniumElementProxyBase
         selenium_element_proxy.driver=driver
         pass
     pass

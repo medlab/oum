@@ -4,8 +4,8 @@ from selenium.webdriver.common import by
 from selenium.webdriver.remote.webdriver import WebDriver, WebElement
 import unittest
 
-from oum.oum import SeleniumElementProxyBase
-from ..uiapps import uiacontractfortest
+from oum.oum import SeleniumElementProxyBase, SeleniumElementProxy
+from ..uiapps import uiacontractfortest, wpfuipagefortest
 
 class BaseUiTestCase(unittest.TestCase):
     def setUp(self):
@@ -40,9 +40,12 @@ class BasicSeleniumElementRetrieveAndPropertyAcessTestCase(BaseUiTestCase):
 
         pass
 
-    def test_oum_proxy_object(self):
-        txt_name_holder_element= SeleniumElementProxyBase(find_by=by.By.ID,
-                                                          by_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_PATH_AUID_BTN_OPEN_NAME_HOLDER)  # type: WebElement
+    def test_get_one_by_id_by_directly_oum_proxy_object(self):
+        txt_name_holder_element= SeleniumElementProxy(find_by=by.By.ID,
+                                                          by_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_PATH_AUID_BTN_OPEN_NAME_HOLDER)  # type: WebElement | SeleniumElementProxyBase
+
+        txt_name_holder_element.driver=self.driver
+
         actual_value=txt_name_holder_element.text
         expect_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_ADEFAULTVALUE_BTN_OPEN_NAME_HOLDER
         self.assertEqual(expect_value, actual_value)
@@ -58,6 +61,25 @@ class BasicSeleniumElementRetrieveAndPropertyAcessTestCase(BaseUiTestCase):
 
         pass
 
+    def test_get_one_by_id_by_oum_element_pd_in_page_obj(self):
+        wpf_test_app=wpfuipagefortest.OUMTestWpfApp(self.driver)
+
+        txt_name_holder_element=wpf_test_app.txt_name_holder_element
+
+        actual_value = txt_name_holder_element.text
+        expect_value = uiacontractfortest.OUM_TESTWPFAPP_EXE_ADEFAULTVALUE_BTN_OPEN_NAME_HOLDER
+        self.assertEqual(expect_value, actual_value)
+
+        txt_name_holder_element.click()  # TODO it not work here!
+
+        new_content = "hello world"
+        txt_name_holder_element.clear()
+        txt_name_holder_element.send_keys(new_content)
+        actual_value = txt_name_holder_element.text
+        expect_value = new_content
+        self.assertEqual(expect_value, actual_value)
+
+        pass
     def test_property_access(self):
         pass
 
