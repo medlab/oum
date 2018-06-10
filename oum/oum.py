@@ -142,3 +142,20 @@ def auto_set_all_oum_element_driver_attr(target_page_obj, driver, parent_seleniu
         selenium_element_proxy.parent_selenium_element_proxy=parent_selenium_element_proxy
         pass
     pass
+
+def create_an_page_obj_sub_tree(driver:WebDriver, page_class, parent_find_by, by_value):
+    '''
+
+    :param driver:
+    :param page_class:
+    :param parent_find_by:
+    :param by_value:
+    :return:
+
+    how about lazy, dirty and list element?
+    '''
+    container_element=SeleniumElementProxy(find_by=parent_find_by, by_value=by_value)
+    container_element.driver=driver
+    container_element.parent_selenium_element_proxy=None
+    return page_class(driver, container_element)
+    pass
