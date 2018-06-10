@@ -1,8 +1,10 @@
 import time
-from selenium.webdriver.common import by
 from selenium import webdriver
+from selenium.webdriver.common import by
+from selenium.webdriver.remote.webdriver import WebDriver, WebElement
 import unittest
 
+from oum.oum import SeleniumElementProxyBase
 from ..uiapps import uiacontractfortest
 
 class BaseUiTestCase(unittest.TestCase):
@@ -14,7 +16,6 @@ class BaseUiTestCase(unittest.TestCase):
                                       'debugConnectToRunningApp': 'false',
                                       'app': uiacontractfortest.OUM_TESTWPFAPP_EXE_PATH,
                                       'args': ''})
-        #time.sleep(2)
         pass
 
     def tearDown(self):
@@ -27,6 +28,34 @@ class BasicSeleniumElementRetrieveAndPropertyAcessTestCase(BaseUiTestCase):
         actual_value=txt_name_holder_element.text
         expect_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_ADEFAULTVALUE_BTN_OPEN_NAME_HOLDER
         self.assertEqual(expect_value, actual_value)
+
+        txt_name_holder_element.click() # TODO it not work here!
+
+        new_content="hello world"
+        txt_name_holder_element.clear()
+        txt_name_holder_element.send_keys(new_content)
+        actual_value=txt_name_holder_element.text
+        expect_value=new_content
+        self.assertEqual(expect_value, actual_value)
+
+        pass
+
+    def test_oum_proxy_object(self):
+        txt_name_holder_element= SeleniumElementProxyBase(find_by=by.By.ID,
+                                                          by_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_PATH_AUID_BTN_OPEN_NAME_HOLDER)  # type: WebElement
+        actual_value=txt_name_holder_element.text
+        expect_value=uiacontractfortest.OUM_TESTWPFAPP_EXE_ADEFAULTVALUE_BTN_OPEN_NAME_HOLDER
+        self.assertEqual(expect_value, actual_value)
+
+        txt_name_holder_element.click() # TODO it not work here!
+
+        new_content="hello world"
+        txt_name_holder_element.clear()
+        txt_name_holder_element.send_keys(new_content)
+        actual_value=txt_name_holder_element.text
+        expect_value=new_content
+        self.assertEqual(expect_value, actual_value)
+
         pass
 
     def test_property_access(self):
