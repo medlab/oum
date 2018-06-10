@@ -10,9 +10,10 @@
         <StackPanel Orientation="Vertical">
             
             <StackPanel Orientation="Horizontal">
+                <TextBox AutomationProperties.AutomationId="AUID_BTN_OPEN_NAME_HOLDER"  Name="txtSimple" Text="Open" />
                 <Button AutomationProperties.AutomationId="AUID_BTN_OPEN" 
                         AutomationProperties.Name="{Binding ElementName=btnOpen, Path=Content, Mode=OneWay}" 
-                        Name="btnOpen">Open</Button>
+                        Name="btnOpen" Content="{Binding ElementName=txtSimple, Path=Text}" ></Button>
                 <Button Name="btnSave">Save</Button>
                 <Button Name="btnClose">Close</Button>
             </StackPanel>
