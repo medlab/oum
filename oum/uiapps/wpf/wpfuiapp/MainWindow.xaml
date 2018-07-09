@@ -56,6 +56,17 @@
                 <TextBox Name="txtWorld">World</TextBox>
             </StackPanel>
 
-        </StackPanel>
+
+            <ComboBox Name="cmb" Loaded="Cmb_OnLoaded"  AutomationProperties.Name="{Binding RelativeSource={RelativeSource Self}, Path=SelectedValue}">
+                <!--<ComboBoxItem>item1</ComboBoxItem>
+                <ComboBoxItem>item2</ComboBoxItem>
+                <ComboBoxItem>item3</ComboBoxItem>-->
+            </ComboBox>
+            <TextBox Name="aaa"></TextBox>
+            <TextBlock Text="{Binding ElementName=cmb, Path=SelectedValue}"></TextBlock>
+            <TextBlock Text="{Binding ElementName=aaa, Path=Text}"></TextBlock>
+
+</StackPanel>
+
     </Grid>
 </Window>

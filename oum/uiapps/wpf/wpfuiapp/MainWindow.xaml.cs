@@ -23,5 +23,10 @@ namespace wpfuiapp
         {
             InitializeComponent();
         }
+
+        private void Cmb_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ((ComboBox) sender).ItemsSource = new List<int> {1, 2, 3,};
+        }
     }
 }
