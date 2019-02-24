@@ -13,7 +13,7 @@ pyOpenSSL==17.5.0
 PySide2==5.9.0a1.dev1528204400
 PySocks==1.6.8
 pywin32==223
-requests==2.18.4
+requests
 requests-toolbelt==0.8.0
 ruamel-yaml==0.15.35
 selenium==3.12.0
@@ -21,6 +21,6 @@ six==1.11.0
 SQLAlchemy==1.2.8
 tqdm==4.23.4
 twine==1.11.0
-urllib3==1.22
+urllib3
 win-inet-pton==1.0.1
 wincertstore==0.2
