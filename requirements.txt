@@ -12,7 +12,7 @@ pycparser==2.18
 pyOpenSSL==17.5.0
 PySide2==5.9.0a1.dev1528204400
 PySocks==1.6.8
-pywin32==223
+pywin32==301
 requests
 requests-toolbelt==0.8.0
 ruamel-yaml==0.15.35
